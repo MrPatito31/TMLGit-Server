@@ -1,2 +1,0 @@
-ENCENDER NGROK: ./ngrok tcp 7777
-ENCENDER TMODLOADER: ./start-tModLoaderServer.sh
