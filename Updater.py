@@ -28,7 +28,6 @@ def download_file(url, save_path):
     conn.request("GET", path)
     response = conn.getresponse()
     
-    # Si hay redirección, seguirla
     if response.status == 302:
         redirect_url = response.getheader('Location')
         conn.close()
@@ -36,7 +35,7 @@ def download_file(url, save_path):
     
     if response.status == 200:
         total_size = int(response.getheader('Content-Length', 0))
-        chunk_size = 1024  # 1 KB
+        chunk_size = 1024
         downloaded_size = 0
 
         with open(save_path, 'wb') as file:
@@ -66,36 +65,29 @@ def unzip_file(zip_path, extract_to, exclude_files=None):
             zip_ref.extract(member, extract_to)
     print(f'Archivo descomprimido en {extract_to}')
 
-# Ejemplo de uso
 repo_owner = "tModLoader"
 repo_name = "tModLoader"
 
-# Obtener información del último release
 release_info = get_latest_release(repo_owner, repo_name)
 
 if release_info:
-    # Mostrar la versión del último release
     version = release_info.get('tag_name', release_info.get('name'))
     print(f"Versión del último release: {version}")
 
-    # Seleccionar automáticamente la segunda opción
     assets = release_info.get('assets', [])
-    selected_index = 1  # Índice 1 para seleccionar el segundo archivo
+    selected_index = 1
     if 0 <= selected_index < len(assets):
         selected_asset = assets[selected_index]
         asset_url = selected_asset['browser_download_url']
         save_path = os.path.join(os.getcwd(), selected_asset['name'])
         
-        # Descargar el archivo seleccionado
         download_file(asset_url, save_path)
         
-        # Descomprimir el archivo si es un ZIP, excluyendo archivos específicos
         if save_path.endswith('.zip'):
             exclude_files = ['serverconfig.txt', 'start-tModLoader.bat', 'start-tModLoader-FamilyShare.bat',
-                             'start-tModLoaderServer.bat', 'RecentGitHubCommits.txt']  # Cambia esto por los nombres de los archivos que quieras excluir
+                             'start-tModLoaderServer.bat', 'RecentGitHubCommits.txt']
             unzip_file(save_path, os.getcwd(), exclude_files)
         
-        # Eliminar el archivo descargado
         os.remove(save_path)
         print(f'Archivo descargado eliminado: {save_path}')
     else:
