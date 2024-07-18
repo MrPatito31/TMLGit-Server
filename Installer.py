@@ -100,7 +100,7 @@ def install_or_update(option):
             os.remove(save_path)
             print(f'Archivo descargado eliminado: {save_path}')
         else:
-            print("No hay suficientes archivos en el release para seleccionar la opción deseada.")
+            print("Error al descargar el archivo.")
     
     if option == "instalar":
         print("Ejecutando la actualización...")
