@@ -27,7 +27,7 @@ def download_file(url, save_path):
     conn = http.client.HTTPSConnection(host)
     conn.request("GET", path)
     response = conn.getresponse()
-
+    
     if response.status == 302:
         redirect_url = response.getheader('Location')
         conn.close()
@@ -35,7 +35,7 @@ def download_file(url, save_path):
     
     if response.status == 200:
         total_size = int(response.getheader('Content-Length', 0))
-        chunk_size = 1024  # 1 KB
+        chunk_size = 1024
         downloaded_size = 0
 
         with open(save_path, 'wb') as file:
@@ -101,9 +101,12 @@ def install_or_update(option):
             print(f'Archivo descargado eliminado: {save_path}')
         else:
             print("No hay suficientes archivos en el release para seleccionar la opción deseada.")
+    
+    if option == "instalar":
+        print("Ejecutando la actualización...")
+        install_or_update("actualizar")
 
 print("Bienvenido a TMLGit-Server")
-print("¡se recomienda actualizar despues de instalar el server!")
 print("Seleccione una opción:")
 print("1. Instalar")
 print("2. Actualizar")
